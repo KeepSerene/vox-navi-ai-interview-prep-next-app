@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 export const metadata: Metadata = {
   title: {
     template: "%s – VoxNavi",
-    default: "VoxNavi – Navigate your future, one answer at a time.",
+    default: "VoxNavi – Navigate your future, one answer at a time",
   },
   description: "An AI-powered platform for preparing for mock interviews.",
 };
