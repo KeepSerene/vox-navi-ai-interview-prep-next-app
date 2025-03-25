@@ -3,21 +3,63 @@ import { google } from "@ai-sdk/google";
 import { getRandomInterviewCover } from "@/lib/utils";
 import { adminDB } from "@/firebase/admin";
 
+// Health check route handler
+// Responds with a simple success message when a GET request is made
 export async function GET() {
-  return Response.json({ success: true, data: "Thank You!" }, { status: 200 });
+  return Response.json(
+    {
+      success: true,
+      message: "Interview Generation API is operational!",
+      timestamp: new Date().toISOString(),
+    },
+    { status: 200 }
+  );
 }
 
-export async function POST(request: Response) {
-  const {
-    interviewType,
-    jobRole,
-    experienceLevel,
-    techStack,
-    questionCount,
-    userId,
-  } = await request.json();
+// Interview generation route handler
+// Processes POST requests to generate interview questions and store interview details
+export async function POST(request: Request) {
+  if (request.method !== "POST") {
+    return Response.json(
+      { success: false, error: "Method Not Allowed" },
+      { status: 405 }
+    );
+  }
 
   try {
+    const requestBody = await request.json();
+
+    const {
+      interviewType,
+      jobRole,
+      experienceLevel,
+      techStack,
+      questionCount,
+      userId,
+    } = requestBody;
+
+    // Validate required fields
+    const missingFields = [
+      "interviewType",
+      "jobRole",
+      "experienceLevel",
+      "techStack",
+      "questionCount",
+      "userId",
+    ].filter((field) => !requestBody[field]);
+
+    if (missingFields.length > 0) {
+      return Response.json(
+        {
+          success: false,
+          error: "Missing required fields!",
+          missingFields,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Generate interview questions using Gemini
     const { text: questions } = await generateText({
       model: google("gemini-2.0-flash-001"),
       prompt: `
@@ -33,9 +75,10 @@ export async function POST(request: Response) {
         ["Question 1", "Question 2", "Question 3"]
         
         Thank you! <3
-    `,
+      `,
     });
 
+    // Prepare interview object for database storage
     const interview = {
       interviewType,
       jobRole,
@@ -49,12 +92,42 @@ export async function POST(request: Response) {
       createdAt: new Date().toISOString(),
     };
 
-    await adminDB.collection("interviews").add(interview);
+    // Store interview
+    const docRef = await adminDB.collection("interviews").add(interview);
 
-    return Response.json({ success: true }, { status: 200 });
+    // Return success response with document ID
+    return Response.json(
+      {
+        success: true,
+        message: "Interview generated successfully",
+        interviewId: docRef.id,
+      },
+      { status: 201 }
+    );
   } catch (err) {
-    console.error(err);
+    // Detailed error logging and response
+    console.error("Interview Generation Error:", err);
 
-    return Response.json({ success: false, error: err }, { status: 500 });
+    // Differentiate between various error types
+    if (err instanceof SyntaxError) {
+      return Response.json(
+        {
+          success: false,
+          error: "Invalid JSON in request body!",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Generic server error for unexpected issues
+    return Response.json(
+      {
+        success: false,
+        error: "Internal Server Error",
+        details:
+          err instanceof Error ? err.message : "An unknown error occurred!",
+      },
+      { status: 500 }
+    );
   }
 }

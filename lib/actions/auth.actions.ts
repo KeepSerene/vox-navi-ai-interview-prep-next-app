@@ -154,7 +154,7 @@ export async function signInAction(params: SignInParams) {
   }
 }
 
-async function getUserProfileFromSessionCookie(): Promise<User | null> {
+export async function getUserProfileFromSessionCookie(): Promise<User | null> {
   // Retrieve the cookie store from Next.js server-side cookies
   const cookieStore = await cookies();
   // Extract the session cookie value if it exists

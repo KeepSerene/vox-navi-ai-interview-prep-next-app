@@ -1,3 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { vapi } from "@/lib/vapi.sdk";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -8,24 +13,104 @@ enum CallStatuses {
   FINISHED = "FINISHED",
 }
 
-function Agent({
-  type,
-  username,
-  userId,
-  interviewId,
-  feedbackId,
-  questions,
-}: AgentProps) {
-  const isTalking = true;
+interface SavedMessage {
+  speaker: "user" | "system" | "assistant";
+  content: string;
+}
 
-  const callStatus = CallStatuses.CONNECTING;
+function Agent({ type, username, userId }: AgentProps) {
+  const [isVapiAssistantTalking, setIsVapiAssistantTalking] = useState(false);
+  const [callStatus, setCallStatus] = useState<CallStatuses>(
+    CallStatuses.INACTIVE
+  );
+  const [messages, setMessages] = useState<SavedMessage[]>([]);
 
-  const transcript = [
-    "What's your name?",
-    "My name is John Doe, nice to meet you!",
-  ];
+  const latestMessage = messages[messages.length - 1].content;
 
-  const lastStatement = transcript[transcript.length - 1];
+  useEffect(() => {
+    // Define Vapi event handlers/listeners
+    const onCallStart = () => {
+      setCallStatus(CallStatuses.ACTIVE);
+    };
+    const onCallEnd = () => {
+      setCallStatus(CallStatuses.FINISHED);
+    };
+
+    const onMessage = (message: Message) => {
+      if (message.type === "transcript" && message.transcriptType === "final") {
+        const newMessage: SavedMessage = {
+          speaker: message.role,
+          content: message.transcript,
+        };
+
+        setMessages((prevState) => [...prevState, newMessage]);
+      }
+    };
+
+    const onSpeechStart = () => {
+      setIsVapiAssistantTalking(true);
+    };
+    const onSpeechEnd = () => {
+      setIsVapiAssistantTalking(false);
+    };
+
+    const onError = (err: Error) => {
+      console.error("Error:", err.message);
+    };
+
+    // Attach the event handlers/listeners to corresponding Vapi events
+    vapi.on("call-start", onCallStart);
+    vapi.on("call-end", onCallEnd);
+
+    vapi.on("message", onMessage);
+
+    vapi.on("speech-start", onSpeechStart);
+    vapi.on("speech-end", onSpeechEnd);
+
+    vapi.on("error", onError);
+
+    return () => {
+      vapi.off("call-start", onCallStart);
+      vapi.off("call-end", onCallEnd);
+
+      vapi.off("message", onMessage);
+
+      vapi.off("speech-start", onSpeechStart);
+      vapi.off("speech-end", onSpeechEnd);
+
+      vapi.off("error", onError);
+    };
+  }, []);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (callStatus === CallStatuses.FINISHED) {
+      router.push("/");
+      // Here, we're the not redirecting the user to the new interview page because:
+      // It may take some time for the interview to be generated! Let the user find the interview
+      // on the homepage once its generated!
+    }
+  }, [type, userId, callStatus, messages]);
+
+  const handleConnectCall = async () => {
+    setCallStatus(CallStatuses.CONNECTING);
+
+    await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ASSISTANT_ID!, {
+      variableValues: {
+        username,
+        userId,
+      },
+    });
+  };
+
+  const handleDisconnectCall = () => {
+    setCallStatus(CallStatuses.FINISHED);
+    vapi.stop();
+  };
+
+  const isCallStatusInactiveOrFinished =
+    CallStatuses.INACTIVE || CallStatuses.FINISHED;
 
   return (
     <>
@@ -41,7 +126,9 @@ function Agent({
               className="object-cover"
             />
 
-            <>{isTalking && <span className="animate-talking" />}</>
+            <>
+              {isVapiAssistantTalking && <span className="animate-talking" />}
+            </>
           </div>
 
           <h3 className="capitalize">AI interviewer</h3>
@@ -52,7 +139,7 @@ function Agent({
           <div className="card-content">
             <Image
               src="/user-avatar.png"
-              alt={`${username} avatar`}
+              alt={username ? `${username}'s avatar` : "Your avatar"}
               width={540}
               height={540}
               className="size-[120px] rounded-full object-cover"
@@ -63,9 +150,9 @@ function Agent({
         </section>
       </div>
 
-      {/* Transcript */}
+      {/* Transcript's latest message */}
       <>
-        {transcript.length > 0 && (
+        {messages.length > 0 && (
           <div className="transcript-border mt-[1.5rem]">
             <div className="transcript">
               <p
@@ -74,7 +161,7 @@ function Agent({
                   "opacity-100 animate-fadeIn"
                 )}
               >
-                {lastStatement}
+                {latestMessage}
               </p>
             </div>
           </div>
@@ -84,11 +171,19 @@ function Agent({
       {/* Call controls */}
       <div className="w-full mt-[2.25rem] flex justify-center">
         {callStatus === CallStatuses.ACTIVE ? (
-          <button type="button" className="btn-disconnect">
+          <button
+            type="button"
+            onClick={handleDisconnectCall}
+            className="btn-disconnect"
+          >
             End
           </button>
         ) : (
-          <button type="button" className="btn-call relative">
+          <button
+            type="button"
+            onClick={handleConnectCall}
+            className="btn-call relative"
+          >
             <span
               className={cn(
                 "rounded-full opacity-75 absolute animate-ping",
@@ -96,12 +191,7 @@ function Agent({
               )}
             />
 
-            <span>
-              {callStatus === CallStatuses.INACTIVE ||
-              callStatus === CallStatuses.FINISHED
-                ? "Call"
-                : "..."}
-            </span>
+            <span>{isCallStatusInactiveOrFinished ? "Call" : ". . ."}</span>
           </button>
         )}
       </div>
