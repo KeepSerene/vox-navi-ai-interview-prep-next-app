@@ -3,7 +3,7 @@ import { getUserProfileFromSessionCookie } from "@/lib/actions/auth.actions";
 import Agent from "@/components/Agent";
 
 export const metadata: Metadata = {
-  title: "Interview",
+  title: "Generate & Conduct Interviews",
 };
 
 async function InterviewPage() {
