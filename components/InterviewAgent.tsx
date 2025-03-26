@@ -18,7 +18,7 @@ interface SavedMessage {
   content: string;
 }
 
-function Agent({ type, username, userId }: AgentProps) {
+function InterviewAgent({ type, username, userId }: AgentProps) {
   const [isVapiAssistantTalking, setIsVapiAssistantTalking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatuses>(
     CallStatuses.INACTIVE
@@ -131,7 +131,7 @@ function Agent({ type, username, userId }: AgentProps) {
             </>
           </div>
 
-          <h3 className="capitalize">AI interviewer</h3>
+          <h3 className="capitalize">VoxNavi</h3>
         </section>
 
         {/* User card */}
@@ -145,7 +145,7 @@ function Agent({ type, username, userId }: AgentProps) {
               className="size-[120px] rounded-full object-cover"
             />
 
-            <h3>{username}</h3>
+            <h3 className="capitalize">{username} (You)</h3>
           </div>
         </section>
       </div>
@@ -199,4 +199,4 @@ function Agent({ type, username, userId }: AgentProps) {
   );
 }
 
-export default Agent;
+export default InterviewAgent;
