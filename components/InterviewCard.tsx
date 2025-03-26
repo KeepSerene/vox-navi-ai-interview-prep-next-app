@@ -7,20 +7,19 @@ import TechStackIcons from "./TechStackIcons";
 
 function InterviewCard({
   interviewId,
-  userId,
-  role,
-  type,
+  jobRole,
+  interviewType,
   techStack,
   createdAt,
 }: InterviewCardProps) {
   const feedback = null as Feedback | null;
-  const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
+  const normalizedType = /mix/gi.test(interviewType) ? "Mixed" : interviewType;
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
   return (
-    <li className="card-border w-full sm:w-[360px] min-h-96 relative">
+    <li className="card-border w-full sm:w-[360px] h-96">
       <div className="card-interview">
         <div className="">
           <div className="w-fit bg-light-600 rounded-bl-lg px-4 py-2 absolute top-0 right-0">
@@ -36,7 +35,7 @@ function InterviewCard({
             className="size-[90px] rounded-full object-cover"
           />
 
-          <h3 className="capitalize mt-5">{role} Interview</h3>
+          <h3 className="capitalize mt-5">{jobRole} Interview</h3>
 
           <div className="mt-3 flex gap-5">
             <div className="flex items-center gap-2">
@@ -54,7 +53,7 @@ function InterviewCard({
             </div>
           </div>
 
-          <p className="lineclamp">
+          <p className="lineclamp mt-3">
             {feedback?.finalAssessment ||
               "You haven't taken an interview yet! Take one now to improve your skills"}
           </p>

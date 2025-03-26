@@ -15,13 +15,13 @@ interface Feedback {
 
 interface Interview {
   id: string;
-  role: string;
-  level: string;
-  questions: string[];
-  techStack: string[];
-  createdAt: string;
   userId: string;
-  type: string;
+  interviewType: string;
+  jobRole: string;
+  experienceLevel: string;
+  techStack: string[];
+  questions: string[];
+  createdAt: string;
   finalized: boolean;
 }
 
@@ -41,8 +41,8 @@ interface User {
 interface InterviewCardProps {
   interviewId?: string;
   userId?: string;
-  role: string;
-  type: string;
+  interviewType: string;
+  jobRole: string;
   techStack: string[];
   createdAt?: string;
 }
@@ -67,7 +67,7 @@ interface GetFeedbackByInterviewIdParams {
 }
 
 interface GetLatestInterviewsParams {
-  userId: string;
+  userId: string | undefined;
   limit?: number;
 }
 

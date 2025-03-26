@@ -50,3 +50,10 @@ export const getRandomInterviewCover = () => {
 
   return `/covers${interviewCovers[randomIndex]}`;
 };
+
+export const toTitleCase = (text: string) => {
+  return text
+    .split(" ")
+    .map((word) => word[0] + word.slice(1))
+    .join(" ");
+};

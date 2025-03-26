@@ -1,10 +1,20 @@
+import { getUserProfileFromSessionCookie } from "@/lib/actions/auth.actions";
+import {
+  fetchInterviewsByUserId,
+  fetchLatestInterviews,
+} from "@/lib/data/interviews";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { dummyInterviews } from "@/constants";
 import InterviewCard from "@/components/InterviewCard";
 
-function HomePage() {
+async function HomePage() {
+  const user = await getUserProfileFromSessionCookie();
+  const [userInterviews, latestInterviews] = await Promise.all([
+    fetchInterviewsByUserId(user?.id),
+    fetchLatestInterviews({ userId: user?.id }),
+  ]);
+
   return (
     <>
       <div className="card-cta">
@@ -34,9 +44,9 @@ function HomePage() {
         <h2>Your Interviews</h2>
 
         <>
-          {dummyInterviews.length > 0 ? (
+          {userInterviews?.length > 0 ? (
             <ul role="list" className="interviews-section">
-              {dummyInterviews.map((interview) => (
+              {userInterviews.map((interview: Interview) => (
                 <InterviewCard key={interview.id} {...interview} />
               ))}
             </ul>
@@ -50,14 +60,14 @@ function HomePage() {
         <h2>Set Sail on Your Interview Journey</h2>
 
         <>
-          {dummyInterviews.length > 0 ? (
+          {latestInterviews?.length > 0 ? (
             <ul role="list" className="interviews-section">
-              {dummyInterviews.map((interview) => (
+              {latestInterviews.map((interview: Interview) => (
                 <InterviewCard key={interview.id} {...interview} />
               ))}
             </ul>
           ) : (
-            <p>There are no interviews avaiable!</p>
+            <p>There are no new interviews avaiable!</p>
           )}
         </>
       </section>

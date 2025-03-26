@@ -316,7 +316,9 @@
   }
 
   .tech-tooltip {
-    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs text-white bg-gray-700 rounded-md shadow-md;
+    @apply hidden group-hover:flex;
+    @apply bg-gray-700 text-white text-xs rounded-md px-2 py-1 mb-1 shadow-md;
+    @apply absolute bottom-full;
   }
 
   .card-interview {

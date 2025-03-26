@@ -25,8 +25,6 @@ function Agent({ type, username, userId }: AgentProps) {
   );
   const [messages, setMessages] = useState<SavedMessage[]>([]);
 
-  const latestMessage = messages[messages.length - 1].content;
-
   useEffect(() => {
     // Define Vapi event handlers/listeners
     const onCallStart = () => {
@@ -55,7 +53,7 @@ function Agent({ type, username, userId }: AgentProps) {
     };
 
     const onError = (err: Error) => {
-      console.error("Error:", err.message);
+      console.error("Vapi agent error:", err);
     };
 
     // Attach the event handlers/listeners to corresponding Vapi events
@@ -109,13 +107,15 @@ function Agent({ type, username, userId }: AgentProps) {
     vapi.stop();
   };
 
+  const latestMessage = messages.at(-1)?.content;
+
   const isCallStatusInactiveOrFinished =
     CallStatuses.INACTIVE || CallStatuses.FINISHED;
 
   return (
     <>
       <div className="call-view">
-        {/* AI interviewer card */}
+        {/* Vapi assistant card */}
         <section className="card-interviewer">
           <div className="avatar">
             <Image
