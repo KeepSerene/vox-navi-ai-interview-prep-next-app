@@ -1,6 +1,6 @@
 import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
-import { getRandomInterviewCover } from "@/lib/utils";
+import { getRandomInterviewCoverImg } from "@/lib/utils";
 import { adminDB } from "@/firebase/admin";
 
 // Health check route handler
@@ -16,7 +16,7 @@ export async function GET() {
   );
 }
 
-// Interview generation route handler
+// Interview generation route handler (Vapi AI assistant will make this post request! See Vapi's workflow)
 // Processes POST requests to generate interview questions and store interview details
 export async function POST(request: Request) {
   if (request.method !== "POST") {
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
       questionCount,
       questions: JSON.parse(questions),
       userId,
-      coverImageURL: getRandomInterviewCover(),
+      coverImageURL: getRandomInterviewCoverImg(),
       finalized: true,
       createdAt: new Date().toISOString(),
     };

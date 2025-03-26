@@ -169,7 +169,7 @@
   }
 
   body {
-    @apply bg-background text-foreground caret-primary;
+    @apply bg-background text-foreground font-mona-sans caret-primary;
 
     /* Firefox specific scrollbar styles */
     scrollbar-width: thin;
@@ -206,17 +206,19 @@
   }
 
   .btn-upload {
-    @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md;
+    @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md transition-opacity hover:opacity-80 focus-visible:opacity-80;
   }
   .btn-primary {
-    @apply w-fit !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
+    @apply w-fit !bg-primary-200 !text-dark-100 transition-colors hover:!bg-primary-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
+    @apply focus-visible:!bg-primary-200/80;
   }
   .btn-secondary {
-    @apply w-fit !bg-dark-200 !text-primary-200 hover:!bg-dark-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
+    @apply w-fit !bg-dark-200 !text-primary-200 transition-colors hover:!bg-dark-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
+    @apply focus-visible:!bg-dark-200/80;
   }
 
   .btn-upload {
-    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input  overflow-hidden;
+    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input overflow-hidden transition-opacity hover:opacity-80 focus-visible:opacity-80;
   }
 
   .card-border {
@@ -317,7 +319,7 @@
 
   .tech-tooltip {
     @apply hidden group-hover:flex;
-    @apply bg-gray-700 text-white text-xs rounded-md px-2 py-1 mb-1 shadow-md;
+    @apply bg-gray-700 text-white text-xs capitalize rounded-md px-2 py-1 mb-1 shadow-md;
     @apply absolute bottom-full;
   }
 

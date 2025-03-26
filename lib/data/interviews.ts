@@ -18,14 +18,14 @@ export async function fetchInterviewsByUserId(
       .get();
 
     if (snapshot.empty) {
-      console.log(`No interviews found for the user with ID: ${userId}`);
+      console.log(`No interviews found for user ${userId}`);
 
       return [];
     }
 
     // Return user interviews
     return snapshot.docs.map((doc) => ({
-      id: doc.id,
+      interviewId: doc.id,
       ...doc.data(),
     })) as Interview[];
   } catch (err) {
@@ -64,7 +64,7 @@ export async function fetchLatestInterviews(
 
     // Return latest interviews created by other users
     return snapshot.docs.map((doc) => ({
-      id: doc.id,
+      interviewId: doc.id,
       ...doc.data(),
     })) as Interview[];
   } catch (err) {
@@ -74,5 +74,26 @@ export async function fetchLatestInterviews(
     );
 
     return [];
+  }
+}
+
+// Fetch interview details given an interview ID
+export async function fetchInterviewDetailsById(
+  id: string
+): Promise<Interview | null> {
+  if (!id) {
+    console.warn("Attempted to fetch interview with undefined ID!");
+
+    return null;
+  }
+
+  try {
+    const interview = await adminDB.collection("interviews").doc(id).get();
+
+    return interview?.data() as Interview | null;
+  } catch (err) {
+    console.error(`Error fetching interview ${id}:`, err);
+
+    return null;
   }
 }

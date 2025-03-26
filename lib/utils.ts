@@ -45,15 +45,8 @@ export const getTechStackLogos = async (techStack: string[]) => {
   return results;
 };
 
-export const getRandomInterviewCover = () => {
+export const getRandomInterviewCoverImg = () => {
   const randomIndex = Math.floor(Math.random() * interviewCovers.length);
 
   return `/covers${interviewCovers[randomIndex]}`;
-};
-
-export const toTitleCase = (text: string) => {
-  return text
-    .split(" ")
-    .map((word) => word[0] + word.slice(1))
-    .join(" ");
 };

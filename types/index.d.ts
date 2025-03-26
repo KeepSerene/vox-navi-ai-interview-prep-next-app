@@ -14,7 +14,7 @@ interface Feedback {
 }
 
 interface Interview {
-  id: string;
+  interviewId: string;
   userId: string;
   interviewType: string;
   jobRole: string;

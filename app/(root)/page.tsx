@@ -47,7 +47,7 @@ async function HomePage() {
           {userInterviews?.length > 0 ? (
             <ul role="list" className="interviews-section">
               {userInterviews.map((interview: Interview) => (
-                <InterviewCard key={interview.id} {...interview} />
+                <InterviewCard key={interview.interviewId} {...interview} />
               ))}
             </ul>
           ) : (
@@ -63,7 +63,7 @@ async function HomePage() {
           {latestInterviews?.length > 0 ? (
             <ul role="list" className="interviews-section">
               {latestInterviews.map((interview: Interview) => (
-                <InterviewCard key={interview.id} {...interview} />
+                <InterviewCard key={interview.interviewId} {...interview} />
               ))}
             </ul>
           ) : (

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Generate & Conduct Interviews",
 };
 
-async function InterviewPage() {
+async function InterviewGenerationPage() {
   const user = await getUserProfileFromSessionCookie();
 
   return (
@@ -15,11 +15,11 @@ async function InterviewPage() {
 
       <InterviewAgent
         type="generate"
-        username={user?.name ?? "You"}
+        username={user?.name ?? "User"}
         userId={user?.id}
       />
     </>
   );
 }
 
-export default InterviewPage;
+export default InterviewGenerationPage;

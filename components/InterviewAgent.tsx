@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { vapi } from "@/lib/vapi.sdk";
 import { useRouter } from "next/navigation";
+import { interviewer } from "@/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
@@ -14,11 +15,17 @@ enum CallStatuses {
 }
 
 interface SavedMessage {
-  speaker: "user" | "system" | "assistant";
+  role: "user" | "system" | "assistant"; // OpenAI message role
   content: string;
 }
 
-function InterviewAgent({ type, username, userId }: AgentProps) {
+function InterviewAgent({
+  type,
+  username,
+  userId,
+  interviewId,
+  questions,
+}: AgentProps) {
   const [isVapiAssistantTalking, setIsVapiAssistantTalking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatuses>(
     CallStatuses.INACTIVE
@@ -37,7 +44,7 @@ function InterviewAgent({ type, username, userId }: AgentProps) {
     const onMessage = (message: Message) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage: SavedMessage = {
-          speaker: message.role,
+          role: message.role,
           content: message.transcript,
         };
 
@@ -82,24 +89,64 @@ function InterviewAgent({ type, username, userId }: AgentProps) {
 
   const router = useRouter();
 
+  const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+    console.log("Generate feedback...");
+
+    const { success, id } = {
+      success: true,
+      id: "feedback-id",
+    };
+
+    if (success && id) {
+      router.push(`/interview/${interviewId}/feedback`);
+    } else {
+      console.error("Error generating feedback!");
+      router.push("/");
+    }
+  };
+
   useEffect(() => {
     if (callStatus === CallStatuses.FINISHED) {
-      router.push("/");
-      // Here, we're the not redirecting the user to the new interview page because:
-      // It may take some time for the interview to be generated! Let the user find the interview
-      // on the homepage once its generated!
+      if (type === "generate") {
+        /**
+         * Redirect the user to the new interview page because:
+         * It may take some time for the interview to be generated! Let the user find the interview
+         * on the homepage once its generated!
+         */
+        router.push("/");
+      } else {
+        handleGenerateFeedback(messages);
+      }
     }
   }, [type, userId, callStatus, messages]);
 
   const handleConnectCall = async () => {
     setCallStatus(CallStatuses.CONNECTING);
 
-    await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ASSISTANT_ID!, {
-      variableValues: {
-        username,
-        userId,
-      },
-    });
+    if (type === "generate") {
+      // Start generate interview call
+      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ASSISTANT_ID!, {
+        variableValues: {
+          username,
+          userId,
+        },
+      });
+    } else {
+      let formattedQuestions = "";
+
+      if (questions) {
+        formattedQuestions = questions
+          .map((question) => `- ${question}`)
+          .join("\n");
+      }
+
+      // Start interview call
+      await vapi.start(interviewer, {
+        variableValues: {
+          questions: formattedQuestions,
+        },
+      });
+    }
   };
 
   const handleDisconnectCall = () => {

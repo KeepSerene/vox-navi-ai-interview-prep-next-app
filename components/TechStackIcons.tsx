@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { cn, getTechStackLogos, toTitleCase } from "@/lib/utils";
+import { cn, getTechStackLogos } from "@/lib/utils";
 
 async function TechStackIcons({ techStack }: TechIconProps) {
   const techStackIcons = await getTechStackLogos(techStack);
@@ -14,7 +14,7 @@ async function TechStackIcons({ techStack }: TechIconProps) {
             index >= 1 && "-ml-3"
           )}
         >
-          <span className="tech-tooltip">{toTitleCase(tech)}</span>
+          <span className="tech-tooltip">{tech}</span>
 
           <Image
             src={url}

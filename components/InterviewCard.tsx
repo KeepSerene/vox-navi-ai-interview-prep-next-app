@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import Image from "next/image";
-import { getRandomInterviewCover } from "@/lib/utils";
+import { getRandomInterviewCoverImg } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import TechStackIcons from "./TechStackIcons";
@@ -19,7 +19,7 @@ function InterviewCard({
   ).format("MMM D, YYYY");
 
   return (
-    <li className="card-border w-full sm:w-[360px] h-96">
+    <li className="card-border w-full sm:w-[360px] min-h-96 h-max">
       <div className="card-interview">
         <div className="">
           <div className="w-fit bg-light-600 rounded-bl-lg px-4 py-2 absolute top-0 right-0">
@@ -28,7 +28,7 @@ function InterviewCard({
 
           {/* Company */}
           <Image
-            src={getRandomInterviewCover()}
+            src={getRandomInterviewCoverImg()}
             alt="Company"
             width={90}
             height={90}
@@ -55,7 +55,7 @@ function InterviewCard({
 
           <p className="lineclamp mt-3">
             {feedback?.finalAssessment ||
-              "You haven't taken an interview yet! Take one now to improve your skills"}
+              "You haven't taken your generated interview yet! Complete it now to get valuable feedback and sharpen your skills for real-world success."}
           </p>
         </div>
 
