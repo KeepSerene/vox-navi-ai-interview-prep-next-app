@@ -13,7 +13,7 @@ type GenerateFeedbackError = {
 export async function generateFeedbackAction(params: GenerateFeedbackParams) {
   const { interviewId, userId, transcript } = params;
 
-  if (!(interviewId && userId && transcript.length)) {
+  if (!interviewId || !userId || transcript.length === 0) {
     return {
       success: false,
       error: {

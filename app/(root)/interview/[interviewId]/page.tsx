@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getUserProfileFromSessionCookie } from "@/lib/actions/auth.actions";
 import { fetchInterviewDetailsById } from "@/lib/data/interviews";
 import { redirect } from "next/navigation";
@@ -5,6 +6,10 @@ import Image from "next/image";
 import { getRandomInterviewCoverImg } from "@/lib/utils";
 import TechStackIcons from "@/components/TechStackIcons";
 import InterviewAgent from "@/components/InterviewAgent";
+
+export const metadata: Metadata = {
+  title: "Conduct Interview",
+};
 
 async function InterviewDetailsPage({ params }: RouteParams) {
   const { interviewId } = await params;
@@ -42,6 +47,7 @@ async function InterviewDetailsPage({ params }: RouteParams) {
       <InterviewAgent
         type="interview"
         username={user?.name ?? "User"}
+        userId={user?.id}
         interviewId={interviewId}
         questions={interviewDetails.questions}
       />

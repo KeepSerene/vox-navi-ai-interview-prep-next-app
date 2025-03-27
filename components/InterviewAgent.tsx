@@ -26,7 +26,7 @@ function InterviewAgent({
   userId,
   interviewId,
   questions,
-}: AgentProps) {
+}: InterviewAgentProps) {
   const [isVapiAssistantTalking, setIsVapiAssistantTalking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatuses>(
     CallStatuses.INACTIVE
@@ -64,7 +64,7 @@ function InterviewAgent({
       console.error("Vapi agent error:", err);
     };
 
-    // Attach the event handlers/listeners to corresponding Vapi events
+    // Attach event handlers/listeners to respective Vapi events
     vapi.on("call-start", onCallStart);
     vapi.on("call-end", onCallEnd);
     vapi.on("message", onMessage);
@@ -85,19 +85,21 @@ function InterviewAgent({
   const router = useRouter();
 
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    console.log("Generate feedback...");
+    console.log("Generating feedback...");
 
-    const { success, feedbackId } = await generateFeedbackAction({
-      interviewId: interviewId!,
-      userId: userId!,
-      transcript: messages,
-    });
+    if (userId && interviewId) {
+      const { success, feedbackId, error } = await generateFeedbackAction({
+        interviewId,
+        userId,
+        transcript: messages,
+      });
 
-    if (success && feedbackId) {
-      router.push(`/interview/${interviewId}/feedback`);
-    } else {
-      console.error("Error generating feedback!");
-      router.push("/");
+      if (success && feedbackId) {
+        router.push(`/interview/${interviewId}/feedback`);
+      } else {
+        console.error("Error generating feedback!");
+        router.push("/");
+      }
     }
   };
 
