@@ -1,3 +1,4 @@
+import { fetchFeedbackByInterviewId } from "@/lib/data/feedback";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { getRandomInterviewCoverImg } from "@/lib/utils";
@@ -5,14 +6,18 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import TechStackIcons from "./TechStackIcons";
 
-function InterviewCard({
+async function InterviewCard({
   interviewId,
+  userId,
   jobRole,
   interviewType,
   techStack,
   createdAt,
 }: InterviewCardProps) {
-  const feedback = null as Feedback | null;
+  const feedback = await fetchFeedbackByInterviewId({
+    interviewId: interviewId!,
+    userId: userId!,
+  });
   const normalizedType = /mix/gi.test(interviewType) ? "Mixed" : interviewType;
   const formattedDate = dayjs(
     feedback?.createdAt || createdAt || Date.now()

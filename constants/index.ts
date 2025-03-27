@@ -156,7 +156,7 @@ export const interviewer: CreateAssistantDTO = {
 
 export const feedbackSchema = z.object({
   totalScore: z.number(),
-  categoryScores: z.tuple([
+  categories: z.tuple([
     z.object({
       name: z.literal("Communication Skills"),
       score: z.number(),

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { interviewer } from "@/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { generateFeedbackAction } from "@/lib/actions/general.actions";
 
 enum CallStatuses {
   INACTIVE = "INACTIVE",
@@ -15,7 +16,7 @@ enum CallStatuses {
 }
 
 interface SavedMessage {
-  role: "user" | "system" | "assistant"; // OpenAI message role
+  role: "user" | "system" | "assistant"; // Based on OpenAI message roles (see the "interviewer" object definition)
   content: string;
 }
 
@@ -66,23 +67,17 @@ function InterviewAgent({
     // Attach the event handlers/listeners to corresponding Vapi events
     vapi.on("call-start", onCallStart);
     vapi.on("call-end", onCallEnd);
-
     vapi.on("message", onMessage);
-
     vapi.on("speech-start", onSpeechStart);
     vapi.on("speech-end", onSpeechEnd);
-
     vapi.on("error", onError);
 
     return () => {
       vapi.off("call-start", onCallStart);
       vapi.off("call-end", onCallEnd);
-
       vapi.off("message", onMessage);
-
       vapi.off("speech-start", onSpeechStart);
       vapi.off("speech-end", onSpeechEnd);
-
       vapi.off("error", onError);
     };
   }, []);
@@ -92,12 +87,13 @@ function InterviewAgent({
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
     console.log("Generate feedback...");
 
-    const { success, id } = {
-      success: true,
-      id: "feedback-id",
-    };
+    const { success, feedbackId } = await generateFeedbackAction({
+      interviewId: interviewId!,
+      userId: userId!,
+      transcript: messages,
+    });
 
-    if (success && id) {
+    if (success && feedbackId) {
       router.push(`/interview/${interviewId}/feedback`);
     } else {
       console.error("Error generating feedback!");

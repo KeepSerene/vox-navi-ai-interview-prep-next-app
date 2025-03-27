@@ -1,3 +1,5 @@
+"use server";
+
 import { adminDB } from "@/firebase/admin";
 
 // Get interviews created by the current user
@@ -37,7 +39,7 @@ export async function fetchInterviewsByUserId(
 
 // Get latest interviews created by other users
 export async function fetchLatestInterviews(
-  params: GetLatestInterviewsParams
+  params: FetchLatestInterviewsParams
 ): Promise<Interview[]> {
   const { userId, limit = 20 } = params; // Here, userId is again the current user's ID
 

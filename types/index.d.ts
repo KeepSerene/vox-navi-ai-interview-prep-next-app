@@ -1,8 +1,8 @@
 interface Feedback {
-  id: string;
+  feedbackId: string;
   interviewId: string;
   totalScore: number;
-  categoryScores: Array<{
+  categories: Array<{
     name: string;
     score: number;
     comment: string;
@@ -25,7 +25,7 @@ interface Interview {
   finalized: boolean;
 }
 
-interface CreateFeedbackParams {
+interface GenerateFeedbackParams {
   interviewId: string;
   userId: string;
   transcript: { role: string; content: string }[];
@@ -61,12 +61,12 @@ interface RouteParams {
   searchParams: Promise<Record<string, string>>;
 }
 
-interface GetFeedbackByInterviewIdParams {
+interface FetchFeedbackByInterviewIdParams {
   interviewId: string;
   userId: string;
 }
 
-interface GetLatestInterviewsParams {
+interface FetchLatestInterviewsParams {
   userId: string | undefined;
   limit?: number;
 }
