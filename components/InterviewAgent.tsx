@@ -183,7 +183,7 @@ function InterviewAgent({
         <section className="card-border">
           <div className="card-content">
             <Image
-              src="/user-avatar.png"
+              src="/user-avatar.webp"
               alt={username ? `${username}'s avatar` : "Your avatar"}
               width={540}
               height={540}

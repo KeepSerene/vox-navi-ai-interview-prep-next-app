@@ -21,7 +21,11 @@ async function RootLayout({ children }: { children: ReactNode }) {
         </nav>
       </header>
 
-      <main>{children}</main>
+      {/* Min height = 100dvh - margin-top - header height */}
+      {/* This is set specifically for centering the spinner component  */}
+      <main className="min-h-[calc(100dvh-2rem-36px)] sm:min-h-[calc(100dvh-3rem-36px)] relative">
+        {children}
+      </main>
     </div>
   );
 }

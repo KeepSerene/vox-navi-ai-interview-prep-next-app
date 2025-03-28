@@ -13,6 +13,7 @@ async function InterviewCard({
   interviewType,
   techStack,
   createdAt,
+  isSelfGenerated,
 }: InterviewCardProps) {
   const feedback = await fetchFeedbackByInterviewId({
     interviewId: interviewId!,
@@ -24,14 +25,14 @@ async function InterviewCard({
   ).format("MMM D, YYYY");
 
   return (
-    <li className="card-border w-full sm:w-[360px] min-h-96 h-max">
-      <div className="card-interview">
-        <div className="">
+    <li className="card-border w-full sm:w-[360px] min-h-96">
+      <div className="card-interview h-96">
+        <section className="">
           <div className="w-fit bg-light-600 rounded-bl-lg px-4 py-2 absolute top-0 right-0">
             <p className="badge-text">{normalizedType}</p>
           </div>
 
-          {/* Company */}
+          {/* Company logo */}
           <Image
             src={getRandomInterviewCoverImg()}
             alt="Company"
@@ -53,18 +54,23 @@ async function InterviewCard({
               <Image src="/star.svg" alt="" width={22} height={22} />
 
               <p>
-                {feedback?.totalScore ? `${feedback?.totalScore}/100` : "N/A"}
+                {isSelfGenerated && feedback?.totalScore
+                  ? `${feedback?.totalScore}/100`
+                  : "N/A"}
               </p>
             </div>
           </div>
 
           <p className="lineclamp mt-3">
-            {truncateText(
-              feedback?.finalAssessment ||
-                "You haven't taken the interview yet! Complete it now to get valuable feedback and sharpen your skills for real-world success."
-            )}
+            {isSelfGenerated
+              ? truncateText(
+                  feedback?.finalAssessment ||
+                    "You haven't taken this interview yet! Complete it to get valuable feedback and improve your skills.",
+                  99
+                )
+              : "Take the interview to sharpen your skills for real-world success!"}
           </p>
-        </div>
+        </section>
 
         <div className="flex flex-row justify-between">
           <TechStackIcons techStack={techStack} />
@@ -72,12 +78,14 @@ async function InterviewCard({
           <Button className="btn-primary asChild">
             <Link
               href={
-                feedback
+                isSelfGenerated && feedback
                   ? `/interview/${interviewId}/feedback`
                   : `/interview/${interviewId}`
               }
             >
-              {feedback ? "Check feedback" : "View interview"}
+              {isSelfGenerated && feedback
+                ? "Check feedback"
+                : "View interview"}
             </Link>
           </Button>
         </div>

@@ -45,6 +45,7 @@ interface InterviewCardProps {
   jobRole: string;
   techStack: string[];
   createdAt?: string;
+  isSelfGenerated: boolean;
 }
 
 interface InterviewAgentProps {

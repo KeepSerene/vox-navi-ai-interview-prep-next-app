@@ -51,10 +51,10 @@ export const getRandomInterviewCoverImg = () => {
   return `/covers${interviewCovers[randomIndex]}`;
 };
 
-export const truncateText = (text: string): string => {
+export const truncateText = (text: string, maxLength: number): string => {
   if (text.length === 0) return text;
 
-  if (text.length > 125) return `${text.slice(0, 125)}...`;
+  if (text.length > maxLength) return `${text.slice(0, maxLength + 1)}...`;
 
   return text;
 };

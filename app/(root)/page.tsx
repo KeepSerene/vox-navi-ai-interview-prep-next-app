@@ -43,11 +43,16 @@ async function HomePage() {
       <section className="mt-8 flex flex-col gap-6">
         <h2>Your Interviews</h2>
 
+        {/* Current user generated interviews */}
         <>
           {userInterviews?.length > 0 ? (
             <ul role="list" className="interviews-section">
               {userInterviews.map((interview: Interview) => (
-                <InterviewCard key={interview.interviewId} {...interview} />
+                <InterviewCard
+                  key={interview.interviewId}
+                  isSelfGenerated={true}
+                  {...interview}
+                />
               ))}
             </ul>
           ) : (
@@ -59,11 +64,16 @@ async function HomePage() {
       <section className="mt-8 flex flex-col gap-6">
         <h2>Set Sail on Your Interview Journey</h2>
 
+        {/* Other users generated interviews */}
         <>
           {latestInterviews?.length > 0 ? (
             <ul role="list" className="interviews-section">
               {latestInterviews.map((interview: Interview) => (
-                <InterviewCard key={interview.interviewId} {...interview} />
+                <InterviewCard
+                  key={interview.interviewId}
+                  isSelfGenerated={false}
+                  {...interview}
+                />
               ))}
             </ul>
           ) : (
