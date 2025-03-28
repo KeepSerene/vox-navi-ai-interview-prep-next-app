@@ -1,7 +1,7 @@
 import { fetchFeedbackByInterviewId } from "@/lib/data/feedback";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { getRandomInterviewCoverImg } from "@/lib/utils";
+import { getRandomInterviewCoverImg, truncateText } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import TechStackIcons from "./TechStackIcons";
@@ -40,7 +40,7 @@ async function InterviewCard({
             className="size-[90px] rounded-full object-cover"
           />
 
-          <h3 className="capitalize mt-5">{jobRole} Interview</h3>
+          <h3 className="capitalize mt-5">{jobRole} interview</h3>
 
           <div className="mt-3 flex gap-5">
             <div className="flex items-center gap-2">
@@ -59,8 +59,10 @@ async function InterviewCard({
           </div>
 
           <p className="lineclamp mt-3">
-            {feedback?.finalAssessment ||
-              "You haven't taken your generated interview yet! Complete it now to get valuable feedback and sharpen your skills for real-world success."}
+            {truncateText(
+              feedback?.finalAssessment ||
+                "You haven't taken the interview yet! Complete it now to get valuable feedback and sharpen your skills for real-world success."
+            )}
           </p>
         </div>
 

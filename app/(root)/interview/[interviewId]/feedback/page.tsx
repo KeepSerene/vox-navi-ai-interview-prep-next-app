@@ -53,13 +53,13 @@ async function FeedbackPage({ params }: RouteParams) {
   return (
     <>
       {feedback && (
-        <article className="grid grid-cols-1 gap-[1.875rem]">
-          <section className="justify-self-center border-b border-light-800 px-[5.625rem] pb-[1.875rem] grid grid-cols-1 gap-[1.875rem]">
-            <h2 className="text-5xl">
+        <article className="grid grid-cols-1 gap-4 sm:gap-[1.875rem]">
+          <section className="feedback-page-wrapper justify-self-center border-b border-light-800 pb-[1.875rem] grid grid-cols-1 gap-[1.875rem]">
+            <h2 className="feedback-page-header">
               Feedback on the Interview&mdash;{interviewDetails.jobRole}
             </h2>
 
-            <div className="text-xl mx-auto flex items-center gap-[2.5rem]">
+            <div className="md:text-lg lg:text-xl mx-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-[2.5rem]">
               <div className="flex items-center gap-1">
                 <Image src="/star.svg" alt="" width={22} height={22} />
 
@@ -85,20 +85,22 @@ async function FeedbackPage({ params }: RouteParams) {
           </section>
 
           {/* Final assessment */}
-          <p className="px-[5.625rem]">{feedback.finalAssessment}</p>
+          <p className="feedback-page-wrapper text-sm md:text-[1rem]">
+            {feedback.finalAssessment}
+          </p>
 
           {/* Categories */}
-          <section className="px-[5.625rem] grid grid-cols-1 gap-5">
-            <h2 className="text-[2rem]">Breakdown of Evaluation</h2>
+          <section className="feedback-page-wrapper grid grid-cols-1 gap-3 md:gap-5">
+            <h4 className="feedback-page-subheader">Breakdown of Evaluation</h4>
 
             <ul role="list" className="grid grid-cols-1 gap-2">
               {feedback.categories.map(({ name, score, comment }, index) => (
                 <li key={index} className="grid grid-cols-1 gap-1">
-                  <p className="text-lg font-semibold">
+                  <p className="md:text-lg font-semibold">
                     {index + 1}.&nbsp;&nbsp;{name}&nbsp;({score}/100)
                   </p>
 
-                  <p className="ml-6 flex items-start gap-2">
+                  <p className="feedback-page-bullet ml-4 md:ml-6 flex items-start gap-2">
                     <span>&#8226;</span>
 
                     <span>{comment}</span>
@@ -109,49 +111,57 @@ async function FeedbackPage({ params }: RouteParams) {
           </section>
 
           {/* Areas for improvement */}
-          {feedback.areasForImprovement.length > 0 && (
-            <section className="px-[5.625rem] grid grid-cols-1 gap-5">
-              <h2 className="text-[2rem]">Areas for Improvement</h2>
+          <>
+            {feedback.areasForImprovement.length > 0 && (
+              <section className="feedback-page-wrapper grid grid-cols-1 gap-3 md:gap-5">
+                <h4 className="feedback-page-subheader">
+                  Areas for Improvement
+                </h4>
 
-              <ul role="list" className="grid grid-cols-1 gap-2">
-                {feedback.areasForImprovement.map((scope) => (
-                  <li key={scope}>
-                    &#8226;&nbsp;&nbsp;<span>{scope}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+                <ul role="list" className="grid grid-cols-1 gap-2">
+                  {feedback.areasForImprovement.map((scope) => (
+                    <li key={scope} className="feedback-page-bullet">
+                      &#8226;&nbsp;&nbsp;<span>{scope}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </>
 
           {/* Strengths */}
-          {feedback.strengths.length > 0 && (
-            <section className="px-[5.625rem] grid grid-cols-1 gap-5">
-              <h2 className="text-[2rem]">Strengths</h2>
+          <>
+            {feedback.strengths.length > 0 && (
+              <section className="feedback-page-wrapper grid grid-cols-1 gap-3 md:gap-5">
+                <h4 className="feedback-page-subheader">Strengths</h4>
 
-              <ul role="list" className="grid grid-cols-1 gap-2">
-                {feedback.strengths.map((strength) => (
-                  <li key={strength}>
-                    &#8226;&nbsp;&nbsp;<span>{strength}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+                <ul role="list" className="grid grid-cols-1 gap-2">
+                  {feedback.strengths.map((strength) => (
+                    <li key={strength} className="feedback-page-bullet">
+                      &#8226;&nbsp;&nbsp;<span>{strength}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </>
 
           {/* Final verdict */}
-          <section className="px-[5.625rem] flex flex-col md:flex-row md:justify-between md:items-center max-md:gap-5">
-            <h2 className="capitalize">Final verdict</h2>
+          <section className="feedback-page-wrapper flex justify-between items-center">
+            <h4 className="feedback-page-subheader capitalize">
+              Final verdict
+            </h4>
 
             <p
               style={{ color: getFinalVerdict(feedback.totalScore).color }}
-              className="w-max bg-dark-200 text-lg font-semibold capitalize rounded-full px-4 py-2"
+              className="w-max bg-dark-200 text-sm md:text-lg font-semibold capitalize rounded-full px-2 py-1 md:px-4 md:py-2"
             >
               {getFinalVerdict(feedback.totalScore).text}
             </p>
           </section>
 
           {/* Action buttons */}
-          <div className="px-[5.625rem] grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="feedback-page-wrapper mt-6 md:mt-8 grid grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             <Button type="button" asChild className="btn-secondary w-full">
               <Link href="/">Go home</Link>
             </Button>
