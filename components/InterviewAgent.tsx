@@ -7,6 +7,7 @@ import { interviewer } from "@/constants";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { generateFeedbackAction } from "@/lib/actions/general.actions";
+import { toast } from "sonner";
 
 enum CallStatuses {
   INACTIVE = "INACTIVE",
@@ -85,8 +86,6 @@ function InterviewAgent({
   const router = useRouter();
 
   const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    console.log("Generating feedback...");
-
     if (userId && interviewId) {
       const { success, feedbackId, error } = await generateFeedbackAction({
         interviewId,
@@ -96,8 +95,9 @@ function InterviewAgent({
 
       if (success && feedbackId) {
         router.push(`/interview/${interviewId}/feedback`);
-      } else {
+      } else if (!success && error) {
         console.error("Error generating feedback!");
+        toast.error(error.message);
         router.push("/");
       }
     }
