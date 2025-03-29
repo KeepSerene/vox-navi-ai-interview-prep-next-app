@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getUserProfileFromSessionCookie } from "@/lib/actions/auth.actions";
 import {
   fetchInterviewsByUserId,
@@ -7,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import InterviewCard from "@/components/InterviewCard";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 async function HomePage() {
   const user = await getUserProfileFromSessionCookie();
