@@ -208,10 +208,12 @@
   .btn-upload {
     @apply flex min-h-14 w-full items-center justify-center gap-1.5 rounded-md transition-opacity hover:opacity-80 focus-visible:opacity-80;
   }
+
   .btn-primary {
     @apply w-fit !bg-primary-200 !text-dark-100 transition-colors hover:!bg-primary-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
     @apply focus-visible:!bg-primary-200/80;
   }
+
   .btn-secondary {
     @apply w-fit !bg-dark-200 !text-primary-200 transition-colors hover:!bg-dark-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
     @apply focus-visible:!bg-dark-200/80;

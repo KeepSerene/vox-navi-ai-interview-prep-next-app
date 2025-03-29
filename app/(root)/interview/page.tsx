@@ -11,7 +11,7 @@ async function InterviewGenerationPage() {
 
   return (
     <>
-      <h3 className="capitalize mb-[2.5rem]">Interview generation</h3>
+      <h3 className="capitalize mb-[2.5rem]">Craft your Interview</h3>
 
       <InterviewAgent
         type="generate"

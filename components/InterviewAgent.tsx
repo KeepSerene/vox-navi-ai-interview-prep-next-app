@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { vapi } from "@/lib/vapi.sdk";
 import { useRouter } from "next/navigation";
 import { interviewer } from "@/constants";
+import { toast } from "sonner";
+import { generateFeedbackAction } from "@/lib/actions/general.actions";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { generateFeedbackAction } from "@/lib/actions/general.actions";
-import { toast } from "sonner";
 
 enum CallStatuses {
   INACTIVE = "INACTIVE",
@@ -85,39 +85,6 @@ function InterviewAgent({
 
   const router = useRouter();
 
-  const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-    if (userId && interviewId) {
-      const { success, feedbackId, error } = await generateFeedbackAction({
-        interviewId,
-        userId,
-        transcript: messages,
-      });
-
-      if (success && feedbackId) {
-        router.push(`/interview/${interviewId}/feedback`);
-      } else if (!success && error) {
-        console.error("Error generating feedback!");
-        toast.error(error.message);
-        router.push("/");
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (callStatus === CallStatuses.FINISHED) {
-      if (type === "generate") {
-        /**
-         * Redirect the user to the new interview page because:
-         * It may take some time for the interview to be generated! Let the user find the interview
-         * on the homepage once its generated!
-         */
-        router.push("/");
-      } else {
-        handleGenerateFeedback(messages);
-      }
-    }
-  }, [type, userId, callStatus, messages]);
-
   const handleConnectCall = async () => {
     setCallStatus(CallStatuses.CONNECTING);
 
@@ -151,6 +118,43 @@ function InterviewAgent({
     setCallStatus(CallStatuses.FINISHED);
     vapi.stop();
   };
+
+  const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+    if (userId && interviewId) {
+      const { success, feedbackId, error } = await generateFeedbackAction({
+        interviewId,
+        userId,
+        transcript: messages,
+      });
+
+      if (success && feedbackId) {
+        router.push(`/interview/${interviewId}/feedback`);
+      } else if (!success && error) {
+        console.error("Error generating feedback!");
+        toast.error(error.message);
+        router.push("/");
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (callStatus === CallStatuses.FINISHED) {
+      if (type === "generate") {
+        toast.info(
+          "Your interview is being generated. You're being redirected to the homepage—check the 'Your Interviews' section to find it once it's ready."
+        );
+
+        /**
+         * Redirect the user to the new interview page because:
+         * It may take some time for the interview to be generated! Let the user find the interview
+         * on the homepage once its generated!
+         */
+        router.push("/");
+      } else {
+        handleGenerateFeedback(messages);
+      }
+    }
+  }, [type, userId, callStatus, messages]);
 
   const latestMessage = messages.at(-1)?.content;
 
