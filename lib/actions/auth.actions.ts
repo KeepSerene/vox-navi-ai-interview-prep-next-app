@@ -237,3 +237,81 @@ export async function isUserAuthenticated() {
 
   return Boolean(userProfile);
 }
+
+export async function signOutAction(params: { userId: string }) {
+  const { userId } = params;
+
+  if (!userId) {
+    return {
+      success: false,
+      message: "No user ID provided!",
+    };
+  }
+
+  try {
+    // Delete all feedback associated with the current user
+    const currentUserFeedbackSnapshot = await adminDB
+      .collection("feedback")
+      .where("userId", "==", userId)
+      .get();
+    const feedbackDeletionPromises = currentUserFeedbackSnapshot.docs.map(
+      async (feedbackDoc) => {
+        adminDB.collection("feedback").doc(feedbackDoc.id).delete();
+      }
+    );
+
+    // Delete all interviews associated with the current user
+    const currentUserInterviewsSnapshot = await adminDB
+      .collection("interviews")
+      .where("userId", "==", userId)
+      .get();
+    const interviewsDeletionPromises = currentUserInterviewsSnapshot.docs.map(
+      (interviewDoc) => {
+        adminDB.collection("interviews").doc(interviewDoc.id).delete();
+      }
+    );
+
+    // Delete the current user from the users collection stored in Firestore
+    const userDeletionPromise = await adminDB
+      .collection("users")
+      .doc(userId)
+      .delete();
+
+    // Execute all deletions in paraller
+    await Promise.all([
+      ...feedbackDeletionPromises,
+      ...interviewsDeletionPromises,
+      userDeletionPromise,
+    ]);
+
+    // Delete the session cookie
+    const cookieStore = await cookies();
+    cookieStore.delete("session");
+
+    return {
+      success: true,
+      message: "Account and all associated data successfully deleted!",
+    };
+  } catch (err) {
+    if (err instanceof FirebaseError) {
+      console.error("Firebase Error during sign-out:", err);
+
+      return {
+        success: false,
+        message: err.message || "An error occurred while signing out!",
+      };
+    }
+
+    const errMsg =
+      err instanceof Error
+        ? err.message
+        : "An unexpected error occurred while signing out!";
+
+    console.error("Sign-out Action Error:", errMsg);
+
+    return {
+      success: false,
+      message: errMsg,
+    };
+  }
+}

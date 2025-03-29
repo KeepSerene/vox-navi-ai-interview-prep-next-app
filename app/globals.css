@@ -202,7 +202,11 @@
   }
 
   .btn-disconnect {
-    @apply inline-block px-7 py-3 text-sm font-bold leading-5 text-white transition-colors duration-150 bg-destructive-100 border border-transparent rounded-full shadow-sm focus:outline-none focus:shadow-2xl active:bg-destructive-200 hover:bg-destructive-200 min-w-28;
+    @apply inline-block px-7 py-3 text-sm font-bold leading-5 !text-white transition-colors duration-150 !bg-destructive-100 border border-transparent rounded-full shadow-sm focus-visible:outline-none focus-visible:shadow-2xl active:!bg-destructive-200 hover:!bg-destructive-200 min-w-28;
+
+    &:disabled {
+      @apply !bg-destructive-100/50 !text-white/50 cursor-not-allowed;
+    }
   }
 
   .btn-upload {
@@ -212,11 +216,21 @@
   .btn-primary {
     @apply w-fit !bg-primary-200 !text-dark-100 transition-colors hover:!bg-primary-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
     @apply focus-visible:!bg-primary-200/80;
+    @apply flex items-center gap-2;
+
+    &:disabled {
+      @apply !bg-primary-200/50 !text-dark-100/50 cursor-not-allowed;
+    }
   }
 
   .btn-secondary {
     @apply w-fit !bg-dark-200 !text-primary-200 transition-colors hover:!bg-dark-200/80 !rounded-full !font-bold px-5 cursor-pointer min-h-10;
     @apply focus-visible:!bg-dark-200/80;
+    @apply flex items-center gap-2;
+
+    &:disabled {
+      @apply !bg-dark-200/50 !text-primary-200/50 cursor-not-allowed;
+    }
   }
 
   .btn-upload {
