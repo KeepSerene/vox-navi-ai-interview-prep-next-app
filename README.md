@@ -1,5 +1,7 @@
 # VoxNavi - AI-Powered Interview Preparation Platform
 
+<div style="text-align: center">
+
 ![VoxNavi Logo](/public/logo.svg)
 
 VoxNavi is a modern, responsive web application designed to help job seekers prepare for interviews through AI-powered mock interviews and detailed feedback.
@@ -8,6 +10,8 @@ VoxNavi is a modern, responsive web application designed to help job seekers pre
 [![Next.js](https://img.shields.io/badge/Next.js-15.2.3-black)](https://nextjs.org/)
 [![Firebase](https://img.shields.io/badge/Firebase-11.5.0-orange)](https://firebase.google.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+
+</div>
 
 ## 🔗 Live Demo
 
@@ -128,6 +132,7 @@ VoxNavi uses Firebase Authentication with secure session cookies for enhanced se
 ![Firebase authentication flowchart](/public/auth-flowchart.png "Firebase authentication flowchart")
 
 ```mermaid
+%%{init: {'theme': 'dark'}}%%
 sequenceDiagram
 participant User as User/Browser
 participant Client as Client-side Code (using clientAuth)
@@ -136,12 +141,8 @@ participant AdminSDK as Admin SDK (adminAuth)
 participant FirebaseAuth as Firebase Authentication
 participant FirebaseDB as Firebase Firestore
 
-%% Theme configuration for dark mode
-%% Using a dark gray background with light text
-rect rgb(40, 44, 52)  %% Dark gray background
-
     %% Sign Up Flow
-    rect rgb(50, 54, 65)  %% Slightly lighter gray for section
+    rect rgb(25, 25, 112)
     Note over User, FirebaseDB: Sign Up Flow
     User->>Client: Enter name, email, password
     Client->>FirebaseAuth: createUserWithEmailAndPassword()
@@ -165,7 +166,7 @@ rect rgb(40, 44, 52)  %% Dark gray background
     end
 
     %% Sign In Flow
-    rect rgb(50, 54, 65)
+    rect rgb(25, 25, 112)
     Note over User, FirebaseDB: Sign In Flow
     User->>Client: Enter email, password
     Client->>FirebaseAuth: signInWithEmailAndPassword()
@@ -193,7 +194,7 @@ rect rgb(40, 44, 52)  %% Dark gray background
     end
 
     %% Session Validation (on subsequent requests)
-    rect rgb(50, 54, 65)
+    rect rgb(25, 25, 112)
     Note over User, AdminSDK: Session Validation (Future Requests)
     User->>ServerAction: Request protected page/data
     ServerAction->>AdminSDK: Verify session cookie
@@ -208,7 +209,6 @@ rect rgb(40, 44, 52)  %% Dark gray background
         ServerAction-->>User: Redirect to login
     end
     end
-end
 ```
 
 ## Detailed Auth Explanations
