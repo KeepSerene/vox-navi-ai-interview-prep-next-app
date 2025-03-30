@@ -1,43 +1,129 @@
-# VoxNavi – Navigate your future, one answer at a time
+# VoxNavi - AI-Powered Interview Preparation Platform
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![VoxNavi Logo](/public/logo.svg)
 
-## Getting Started
+VoxNavi is a modern, responsive web application designed to help job seekers prepare for interviews through AI-powered mock interviews and detailed feedback.
 
-First, run the development server:
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Next.js](https://img.shields.io/badge/Next.js-15.2.3-black)](https://nextjs.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-11.5.0-orange)](https://firebase.google.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+
+## 🔗 Live Demo
+
+Experience VoxNavi in action: [https://vox-navi.vercel.app/](https://vox-navi.vercel.app/)
+
+## 📱 Desktop View
+
+![VoxNavi Desktop View](/public/vox-navi-home.png)
+
+## ✨ Features
+
+- **AI Voice Interviews**: Practice with Vapi's voice assistant for a realistic interview experience
+- **Customizable Interviews**: Generate interviews tailored to specific job roles, experience levels, and tech stacks
+- **Comprehensive Feedback**: Get detailed assessments powered by Google's Gemini AI
+- **User Authentication**: Secure signup and login system via Firebase Authentication
+- **Interview Library**: Access and attempt interviews created by other users
+- **Dark Mode Design**: Modern, sleek UI with responsive design for all devices
+- **Detailed Performance Analytics**: View scores across multiple categories including communication skills, technical knowledge, and problem-solving
+- **Privacy Control**: Option to delete all user data upon account deletion
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15, React 19, Tailwind CSS 4
+- **UI Components**: shadcn/ui
+- **Backend**: Next.js API Routes, Firebase Admin SDK
+- **Database**: Firebase Firestore
+- **Authentication**: Firebase Auth
+- **Form Validation**: Zod, React Hook Form
+- **AI Services**:
+  - Voice Assistant: Vapi AI
+  - Feedback Generation: Google Gemini
+  - Interview Questions: OpenAI
+- **Deployment**: Vercel
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Firebase account
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/KeepSerene/vox-navi-ai-interview-prep-next-app
+cd vox-navi-ai-interview-prep-next-app
+```
+
+2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables
+   Create a `.env.local` file with the following variables:
+
+```
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+
+# Firebase Admin (Service Account)
+FIREBASE_ADMIN_PROJECT_ID=
+FIREBASE_ADMIN_CLIENT_EMAIL=
+FIREBASE_ADMIN_PRIVATE_KEY=
+
+# Google AI SDK
+GOOGLE_API_KEY=
+
+# Vapi
+NEXT_PUBLIC_VAPI_API_KEY=
+```
+
+4. Run the development server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📚 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+vox-navi-next15-app/
+├── app/                  # Next.js pages and API routes
+├── components/           # Reusable React components
+├── constants/            # Application constants
+├── firebase/             # Firebase configuration and utils
+├── lib/                  # Utility functions and hooks
+├── public/               # Static assets
+├── types/                # TypeScript type definitions
+└── ...config files
+```
 
-## Learn More
+## 🔒 Authentication Flow
 
-To learn more about Next.js, take a look at the following resources:
+VoxNavi uses Firebase Authentication with secure session cookies for enhanced security:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Server-side session validation
+- HTTP-only cookies
+- Session expiration and automatic renewal
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## UserAuth using Firebase
+## User Authentication using Firebase Auth
 
 ![Firebase authentication flowchart](/public/auth-flowchart.png "Firebase authentication flowchart")
 
@@ -50,8 +136,12 @@ participant AdminSDK as Admin SDK (adminAuth)
 participant FirebaseAuth as Firebase Authentication
 participant FirebaseDB as Firebase Firestore
 
+%% Theme configuration for dark mode
+%% Using a dark gray background with light text
+rect rgb(40, 44, 52)  %% Dark gray background
+
     %% Sign Up Flow
-    rect rgb(230, 245, 255)
+    rect rgb(50, 54, 65)  %% Slightly lighter gray for section
     Note over User, FirebaseDB: Sign Up Flow
     User->>Client: Enter name, email, password
     Client->>FirebaseAuth: createUserWithEmailAndPassword()
@@ -75,7 +165,7 @@ participant FirebaseDB as Firebase Firestore
     end
 
     %% Sign In Flow
-    rect rgb(255, 245, 230)
+    rect rgb(50, 54, 65)
     Note over User, FirebaseDB: Sign In Flow
     User->>Client: Enter email, password
     Client->>FirebaseAuth: signInWithEmailAndPassword()
@@ -103,7 +193,7 @@ participant FirebaseDB as Firebase Firestore
     end
 
     %% Session Validation (on subsequent requests)
-    rect rgb(230, 255, 230)
+    rect rgb(50, 54, 65)
     Note over User, AdminSDK: Session Validation (Future Requests)
     User->>ServerAction: Request protected page/data
     ServerAction->>AdminSDK: Verify session cookie
@@ -118,6 +208,7 @@ participant FirebaseDB as Firebase Firestore
         ServerAction-->>User: Redirect to login
     end
     end
+end
 ```
 
 ## Detailed Auth Explanations
@@ -148,3 +239,48 @@ The ID token is a JWT (JSON Web Token) that:
 - Is cryptographically signed to verify authenticity
 - Is short-lived (usually 1 hour)
 - Gets exchanged on the server for a longer-lived session cookie
+
+## 📊 Interview and Feedback System
+
+1. **Interview Generation**:
+
+   - Custom interviews based on job role, experience level, and tech stack
+   - Questions generated using AI models
+
+2. **Voice Interview Process**:
+
+   - Real-time voice interaction with the AI assistant
+   - Transcript recording for feedback generation
+
+3. **Feedback Analysis**:
+   - Multiple performance categories assessment
+   - Strengths and areas for improvement
+   - Overall score and detailed recommendations
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+Lead developer: [Dhrubajyoti Bhattacharjee](https://github.com/KeepSerene)
+
+## 🙏 Acknowledgements
+
+- [Next.js](https://nextjs.org/)
+- [Firebase](https://firebase.google.com/)
+- [Vapi AI](https://vapi.ai/)
+- [Google Gemini](https://ai.google.dev/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Vercel](https://vercel.com/)

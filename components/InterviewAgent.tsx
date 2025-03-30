@@ -144,10 +144,6 @@ function InterviewAgent({
       console.log("Call ended...");
 
       if (type === "generate") {
-        // toast.info(
-        //   "Your interview is being generated. You're being redirected to the homepage—check the 'Your Interviews' section to find it once it's ready."
-        // );
-
         toast.info(
           "Your interview is being generated. You'll be redirected to the homepage shortly. Check the 'Your Interviews' section to find it once it's ready.",
           { duration: 5000 }
@@ -158,7 +154,6 @@ function InterviewAgent({
          * It may take some time for the interview to be generated! Let the user find the interview
          * on the homepage once its generated!
          */
-        // router.push("/");
 
         // Delay the redirect slightly to ensure user sees the message
         setTimeout(() => {
