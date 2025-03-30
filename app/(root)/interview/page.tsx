@@ -3,7 +3,7 @@ import { getUserProfileFromSessionCookie } from "@/lib/actions/auth.actions";
 import InterviewAgent from "@/components/InterviewAgent";
 
 export const metadata: Metadata = {
-  title: "Generate & Conduct Interviews",
+  title: "Generate Interview",
 };
 
 async function InterviewGenerationPage() {
@@ -11,7 +11,7 @@ async function InterviewGenerationPage() {
 
   return (
     <>
-      <h3 className="capitalize mb-[2.5rem]">Craft your Interview</h3>
+      <h3 className="capitalize mb-[2.5rem]">Generate interview</h3>
 
       <InterviewAgent
         type="generate"

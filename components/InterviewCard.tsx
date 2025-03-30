@@ -26,7 +26,7 @@ async function InterviewCard({
 
   return (
     <li className="card-border w-full sm:w-[360px] min-h-96">
-      <div className="card-interview h-96">
+      <div className="card-interview min-h-96">
         <section className="">
           <div className="w-fit bg-light-600 rounded-bl-lg px-4 py-2 absolute top-0 right-0">
             <p className="badge-text">{normalizedType}</p>

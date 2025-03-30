@@ -31,8 +31,8 @@ async function HomePage() {
             savvy feedback.
           </p>
 
-          <Button asChild className="max-lg:w-full btn-primary">
-            <Link href="/interview">Start an interview</Link>
+          <Button type="button" asChild className="max-lg:w-full btn-primary">
+            <Link href="/interview">Generate an interview</Link>
           </Button>
         </section>
 
@@ -67,7 +67,7 @@ async function HomePage() {
       </section>
 
       <section className="mt-8 flex flex-col gap-6">
-        <h2>Set Sail on Your Interview Journey</h2>
+        <h2>Explore Interviews from Other Users</h2>
 
         {/* Other users generated interviews */}
         <>
@@ -82,7 +82,10 @@ async function HomePage() {
               ))}
             </ul>
           ) : (
-            <p>There are no new interviews avaiable!</p>
+            <p>
+              No interviews available at the moment. Check back later for new
+              ones!
+            </p>
           )}
         </>
       </section>

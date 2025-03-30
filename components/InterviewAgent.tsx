@@ -34,6 +34,8 @@ function InterviewAgent({
   );
   const [messages, setMessages] = useState<SavedMessage[]>([]);
 
+  const router = useRouter();
+
   useEffect(() => {
     // Define Vapi event handlers/listeners
     const onCallStart = () => {
@@ -82,8 +84,6 @@ function InterviewAgent({
       vapi.off("error", onError);
     };
   }, []);
-
-  const router = useRouter();
 
   const handleConnectCall = async () => {
     setCallStatus(CallStatuses.CONNECTING);
@@ -159,7 +159,8 @@ function InterviewAgent({
   const latestMessage = messages.at(-1)?.content;
 
   const isCallStatusInactiveOrFinished =
-    CallStatuses.INACTIVE || CallStatuses.FINISHED;
+    callStatus === CallStatuses.INACTIVE ||
+    callStatus === CallStatuses.FINISHED;
 
   return (
     <>
@@ -231,16 +232,10 @@ function InterviewAgent({
           <button
             type="button"
             onClick={handleConnectCall}
+            disabled={callStatus === CallStatuses.CONNECTING}
             className="btn-call relative"
           >
-            <span
-              className={cn(
-                "rounded-full opacity-75 absolute animate-ping",
-                callStatus !== CallStatuses.CONNECTING ? "hidden" : ""
-              )}
-            />
-
-            <span>{isCallStatusInactiveOrFinished ? "Call" : ". . ."}</span>
+            {isCallStatusInactiveOrFinished ? "Call" : "Connecting..."}
           </button>
         )}
       </div>
