@@ -20,7 +20,7 @@ export default function NotFound() {
         Page not found
       </p>
 
-      <p className="max-w-md text-lg md:text-xl mt-4">
+      <p className="max-w-md my-4">
         Oops! The page you're looking for doesn't exist. It might have been
         moved or deleted.
       </p>
