@@ -95,7 +95,7 @@ export async function POST(request: Request) {
     // Store interview
     const docRef = await adminDB.collection("interviews").add(interview);
 
-    // Return success response with document ID
+    // Return a success response with the generated interview ID
     return Response.json(
       {
         success: true,

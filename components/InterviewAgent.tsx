@@ -139,9 +139,16 @@ function InterviewAgent({
 
   useEffect(() => {
     if (callStatus === CallStatuses.FINISHED) {
+      console.log("Call ended...");
+
       if (type === "generate") {
+        // toast.info(
+        //   "Your interview is being generated. You're being redirected to the homepage—check the 'Your Interviews' section to find it once it's ready."
+        // );
+
         toast.info(
-          "Your interview is being generated. You're being redirected to the homepage—check the 'Your Interviews' section to find it once it's ready."
+          "Your interview is being generated. You'll be redirected to the homepage shortly. Check the 'Your Interviews' section to find it once it's ready.",
+          { duration: 5000 }
         );
 
         /**
@@ -149,12 +156,17 @@ function InterviewAgent({
          * It may take some time for the interview to be generated! Let the user find the interview
          * on the homepage once its generated!
          */
-        router.push("/");
+        // router.push("/");
+
+        // Delay the redirect slightly to ensure user sees the message
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       } else {
         handleGenerateFeedback(messages);
       }
     }
-  }, [type, userId, callStatus, messages]);
+  }, [type, userId, callStatus, messages, router]);
 
   const latestMessage = messages.at(-1)?.content;
 
@@ -233,7 +245,7 @@ function InterviewAgent({
             type="button"
             onClick={handleConnectCall}
             disabled={callStatus === CallStatuses.CONNECTING}
-            className="btn-call relative"
+            className="btn-call"
           >
             {isCallStatusInactiveOrFinished ? "Call" : "Connecting..."}
           </button>
