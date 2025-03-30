@@ -65,6 +65,8 @@ function InterviewAgent({
 
     const onError = (err: Error) => {
       console.error("Vapi agent error:", err);
+      toast.error("Connection error! Please try again later.");
+      setCallStatus(CallStatuses.FINISHED);
     };
 
     // Attach event handlers/listeners to respective Vapi events
