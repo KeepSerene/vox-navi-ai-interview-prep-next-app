@@ -139,31 +139,18 @@ VoxNavi uses Firebase Authentication with secure session cookies for enhanced se
 
 ![Firebase authentication flowchart](/public/auth-flowchart.png "Firebase Authentication Flowchart")
 
-### Sign-up Flow
+### Sign Up Flow
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {
-    'background': '#0d1117',
-    'primaryColor': '#161b22',
-    'secondaryColor': '#21262d',
-    'tertiaryColor': '#30363d',
-    'lineColor': '#c9d1d9',
-    'textColor': '#c9d1d9',
-    'actorBkg': '#21262d',
-    'actorBorder': '#30363d',
-    'actorTextColor': '#c9d1d9',
-    'messageTextColor': '#c9d1d9'
-}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'background': '#0d1117', 'primaryColor': '#30363d', 'primaryTextColor': '#e6edf3', 'primaryBorderColor': '#30363d', 'lineColor': '#8b949e', 'secondaryColor': '#161b22', 'tertiaryColor': '#161b22' }}}%%
 sequenceDiagram
-title Sign Up Flow
-participant User as User/Browser
-participant Client as Client-side Code (using clientAuth)
-participant ServerAction as Server Actions
-participant AdminSDK as Admin SDK (adminAuth)
-participant FirebaseAuth as Firebase Authentication
-participant FirebaseDB as Firebase Firestore
+    participant User as User/Browser
+    participant Client as Client-side Code (using clientAuth)
+    participant ServerAction as Server Actions
+    participant AdminSDK as Admin SDK (adminAuth)
+    participant FirebaseAuth as Firebase Authentication
+    participant FirebaseDB as Firebase Firestore
 
-rect #161b22
     Note over User, FirebaseDB: Sign Up Flow
     User->>Client: Enter name, email, password
     Client->>FirebaseAuth: createUserWithEmailAndPassword()
@@ -184,35 +171,22 @@ rect #161b22
         ServerAction-->>Client: Return success message
         Client->>User: Display success toast & redirect to sign-in
     end
-end
 
 ```
 
-### Sign-in Flow
+### Sign In Flow
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {
-    'background': '#0d1117',
-    'primaryColor': '#161b22',
-    'secondaryColor': '#21262d',
-    'tertiaryColor': '#30363d',
-    'lineColor': '#c9d1d9',
-    'textColor': '#c9d1d9',
-    'actorBkg': '#21262d',
-    'actorBorder': '#30363d',
-    'actorTextColor': '#c9d1d9',
-    'messageTextColor': '#c9d1d9'
-}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'background': '#0d1117', 'primaryColor': '#30363d', 'primaryTextColor': '#e6edf3', 'primaryBorderColor': '#30363d', 'lineColor': '#8b949e', 'secondaryColor': '#161b22', 'tertiaryColor': '#161b22' }}}%%
 sequenceDiagram
-title Sign In Flow
-participant User as User/Browser
-participant Client as Client-side Code (using clientAuth)
-participant ServerAction as Server Actions
-participant AdminSDK as Admin SDK (adminAuth)
-participant FirebaseAuth as Firebase Authentication
+    participant User as User/Browser
+    participant Client as Client-side Code (using clientAuth)
+    participant ServerAction as Server Actions
+    participant AdminSDK as Admin SDK (adminAuth)
+    participant FirebaseAuth as Firebase Authentication
+    participant FirebaseDB as Firebase Firestore
 
-rect #161b22
-    Note over User, FirebaseAuth: Sign In Flow
+    Note over User, FirebaseDB: Sign In Flow
     User->>Client: Enter email, password
     Client->>FirebaseAuth: signInWithEmailAndPassword()
     FirebaseAuth-->>Client: Return user credential
@@ -236,34 +210,20 @@ rect #161b22
         ServerAction-->>Client: Return success
         Client->>User: Display success toast & redirect to home
     end
-end
 
 ```
 
 ### Session Validation Flow (Future Requests)
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': {
-    'background': '#0d1117',
-    'primaryColor': '#161b22',
-    'secondaryColor': '#21262d',
-    'tertiaryColor': '#30363d',
-    'lineColor': '#c9d1d9',
-    'textColor': '#c9d1d9',
-    'actorBkg': '#21262d',
-    'actorBorder': '#30363d',
-    'actorTextColor': '#c9d1d9',
-    'messageTextColor': '#c9d1d9'
-}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': { 'darkMode': true, 'background': '#0d1117', 'primaryColor': '#30363d', 'primaryTextColor': '#e6edf3', 'primaryBorderColor': '#30363d', 'lineColor': '#8b949e', 'secondaryColor': '#161b22', 'tertiaryColor': '#161b22' }}}%%
 sequenceDiagram
-title Session Validation Flow (Future Requests)
-participant User as User/Browser
-participant ServerAction as Server Actions
-participant AdminSDK as Admin SDK (adminAuth)
-participant FirebaseAuth as Firebase Authentication
+    participant User as User/Browser
+    participant ServerAction as Server Actions
+    participant AdminSDK as Admin SDK (adminAuth)
+    participant FirebaseAuth as Firebase Authentication
 
-rect #161b22
-    Note over User, AdminSDK: Session Validation Flow
+    Note over User, FirebaseAuth: Session Validation (Future Requests)
     User->>ServerAction: Request protected page/data
     ServerAction->>AdminSDK: Verify session cookie
     AdminSDK->>FirebaseAuth: validateSessionCookie()
@@ -276,7 +236,6 @@ rect #161b22
         AdminSDK-->>ServerAction: Authentication failed
         ServerAction-->>User: Redirect to login
     end
-end
 
 ```
 
