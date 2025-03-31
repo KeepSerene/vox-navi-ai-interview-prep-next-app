@@ -4,7 +4,7 @@
 
 <img src="./public/logo.svg" alt="VoxNavi Logo" width="120" />
 
-<h3>AI-Powered Interview Preparation Platform</h3>
+<h2>AI-Powered Interview Preparation Platform</h2>
 
 <p>
 VoxNavi is a modern, responsive web application designed to help job seekers prepare for interviews through AI-powered mock interviews and detailed feedback.
@@ -142,7 +142,18 @@ VoxNavi uses Firebase Authentication with secure session cookies for enhanced se
 ### Sign-up Flow
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#0d1117', 'textColor': '#c9d1d9'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': {
+    'background': '#0d1117',
+    'primaryColor': '#161b22',
+    'secondaryColor': '#21262d',
+    'tertiaryColor': '#30363d',
+    'lineColor': '#c9d1d9',
+    'textColor': '#c9d1d9',
+    'actorBkg': '#21262d',
+    'actorBorder': '#30363d',
+    'actorTextColor': '#c9d1d9',
+    'messageTextColor': '#c9d1d9'
+}}}%%
 sequenceDiagram
 title Sign Up Flow
 participant User as User/Browser
@@ -174,12 +185,24 @@ rect #161b22
         Client->>User: Display success toast & redirect to sign-in
     end
 end
+
 ```
 
 ### Sign-in Flow
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#0d1117', 'textColor': '#c9d1d9'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': {
+    'background': '#0d1117',
+    'primaryColor': '#161b22',
+    'secondaryColor': '#21262d',
+    'tertiaryColor': '#30363d',
+    'lineColor': '#c9d1d9',
+    'textColor': '#c9d1d9',
+    'actorBkg': '#21262d',
+    'actorBorder': '#30363d',
+    'actorTextColor': '#c9d1d9',
+    'messageTextColor': '#c9d1d9'
+}}}%%
 sequenceDiagram
 title Sign In Flow
 participant User as User/Browser
@@ -214,12 +237,24 @@ rect #161b22
         Client->>User: Display success toast & redirect to home
     end
 end
+
 ```
 
 ### Session Validation Flow (Future Requests)
 
 ```mermaid
-%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#0d1117', 'textColor': '#c9d1d9'}}}%%
+%%{init: {'theme': 'dark', 'themeVariables': {
+    'background': '#0d1117',
+    'primaryColor': '#161b22',
+    'secondaryColor': '#21262d',
+    'tertiaryColor': '#30363d',
+    'lineColor': '#c9d1d9',
+    'textColor': '#c9d1d9',
+    'actorBkg': '#21262d',
+    'actorBorder': '#30363d',
+    'actorTextColor': '#c9d1d9',
+    'messageTextColor': '#c9d1d9'
+}}}%%
 sequenceDiagram
 title Session Validation Flow (Future Requests)
 participant User as User/Browser
@@ -242,6 +277,7 @@ rect #161b22
         ServerAction-->>User: Redirect to login
     end
 end
+
 ```
 
 ## Detailed Auth Explanations
