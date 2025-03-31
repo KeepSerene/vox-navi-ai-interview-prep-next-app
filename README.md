@@ -1,10 +1,18 @@
-# VoxNavi - AI-Powered Interview Preparation Platform
+# VoxNavi
 
-<div style="text-align: center">
+<div align="center">
 
-![VoxNavi Logo](/public/logo.svg)
+<img src="./public/logo.svg" alt="VoxNavi Logo" width="120" />
 
+<h3>AI-Powered Interview Preparation Platform</h3>
+
+<p>
 VoxNavi is a modern, responsive web application designed to help job seekers prepare for interviews through AI-powered mock interviews and detailed feedback.
+</p>
+
+</div>
+
+<div align="center">
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Next.js](https://img.shields.io/badge/Next.js-15.2.3-black)](https://nextjs.org/)
@@ -19,7 +27,7 @@ Experience VoxNavi in action: [https://vox-navi.vercel.app/](https://vox-navi.ve
 
 ## 📱 Desktop View
 
-![VoxNavi Desktop View](/public/vox-navi-home.png)
+![VoxNavi Desktop View](/public/vox-navi-home.png "Homepage")
 
 ## ✨ Features
 
@@ -129,11 +137,14 @@ VoxNavi uses Firebase Authentication with secure session cookies for enhanced se
 
 ## User Authentication using Firebase Auth
 
-![Firebase authentication flowchart](/public/auth-flowchart.png "Firebase authentication flowchart")
+![Firebase authentication flowchart](/public/auth-flowchart.png "Firebase Authentication Flowchart")
+
+### Sign-up Flow
 
 ```mermaid
-%%{init: {'theme': 'dark'}}%%
+%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#0d1117', 'textColor': '#c9d1d9'}}}%%
 sequenceDiagram
+title Sign Up Flow
 participant User as User/Browser
 participant Client as Client-side Code (using clientAuth)
 participant ServerAction as Server Actions
@@ -141,8 +152,7 @@ participant AdminSDK as Admin SDK (adminAuth)
 participant FirebaseAuth as Firebase Authentication
 participant FirebaseDB as Firebase Firestore
 
-    %% Sign Up Flow
-    rect rgb(25, 25, 112)
+rect #161b22
     Note over User, FirebaseDB: Sign Up Flow
     User->>Client: Enter name, email, password
     Client->>FirebaseAuth: createUserWithEmailAndPassword()
@@ -163,11 +173,23 @@ participant FirebaseDB as Firebase Firestore
         ServerAction-->>Client: Return success message
         Client->>User: Display success toast & redirect to sign-in
     end
-    end
+end
+```
 
-    %% Sign In Flow
-    rect rgb(25, 25, 112)
-    Note over User, FirebaseDB: Sign In Flow
+### Sign-in Flow
+
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#0d1117', 'textColor': '#c9d1d9'}}}%%
+sequenceDiagram
+title Sign In Flow
+participant User as User/Browser
+participant Client as Client-side Code (using clientAuth)
+participant ServerAction as Server Actions
+participant AdminSDK as Admin SDK (adminAuth)
+participant FirebaseAuth as Firebase Authentication
+
+rect #161b22
+    Note over User, FirebaseAuth: Sign In Flow
     User->>Client: Enter email, password
     Client->>FirebaseAuth: signInWithEmailAndPassword()
     FirebaseAuth-->>Client: Return user credential
@@ -191,11 +213,22 @@ participant FirebaseDB as Firebase Firestore
         ServerAction-->>Client: Return success
         Client->>User: Display success toast & redirect to home
     end
-    end
+end
+```
 
-    %% Session Validation (on subsequent requests)
-    rect rgb(25, 25, 112)
-    Note over User, AdminSDK: Session Validation (Future Requests)
+### Session Validation Flow (Future Requests)
+
+```mermaid
+%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#0d1117', 'textColor': '#c9d1d9'}}}%%
+sequenceDiagram
+title Session Validation Flow (Future Requests)
+participant User as User/Browser
+participant ServerAction as Server Actions
+participant AdminSDK as Admin SDK (adminAuth)
+participant FirebaseAuth as Firebase Authentication
+
+rect #161b22
+    Note over User, AdminSDK: Session Validation Flow
     User->>ServerAction: Request protected page/data
     ServerAction->>AdminSDK: Verify session cookie
     AdminSDK->>FirebaseAuth: validateSessionCookie()
@@ -208,7 +241,7 @@ participant FirebaseDB as Firebase Firestore
         AdminSDK-->>ServerAction: Authentication failed
         ServerAction-->>User: Redirect to login
     end
-    end
+end
 ```
 
 ## Detailed Auth Explanations
